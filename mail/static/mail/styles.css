@@ -1,0 +1,32 @@
+textarea {
+    min-height: 400px;
+}
+
+.frame{
+    display: block;
+    border: 1px solid black;
+    padding: 10px;
+    
+    height: fit-content;
+    width: auto;
+}
+
+.bold{
+    font-weight: bold;
+    margin: 5px;
+    display: inline;
+}
+
+.subject{
+    margin: 5px;
+    display: inline;
+}
+.time{
+    float: right;
+    text-align: right;
+    font-size: 12px;
+    color: grey;
+    margin: 5px;
+    
+}
+
