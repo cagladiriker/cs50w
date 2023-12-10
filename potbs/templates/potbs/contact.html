@@ -1,0 +1,226 @@
+{% extends "potbs/layout.html" %}
+
+{% load static %}
+{% block script %}
+    <script src="{% static 'potbs/contact.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="row" id="game-box">
+    <div id="game1"> 
+        <img src="media/phone.png" id="phone-booth">
+        <img src="media/stick.png" id="stickman" style="display: none;">
+        <img src="media/start.png" id="start-button">
+        <img src="media/wasd.png"  class="rounded float-end" id="wasd" alt="..." style="margin-top:100px;display: none;">
+    </div>
+    <p id="phone-number" style="display:none;" >+90 001 222 333 44</p>
+</div>
+
+<div class="row" id="game-box2">
+  <div id="game2">
+      <img src="media/computer.png" id="computer">
+      <img src="media/mail.png" id="email-icon" style="display: none;">
+      <!-- Add spiky walls with unique IDs -->
+      <img src="media/spike.png" class="spiky-wall" id="spiky-wall-1">
+      <img src="media/spike.png" class="spiky-wall" id="spiky-wall-2">
+      <img src="media/spike.png" class="spiky-wall" id="spiky-wall-3">
+      <img src="media/spike.png" class="spiky-wall" id="spiky-wall-4">
+      <img src="media/spike.png" class="spiky-wall" id="spiky-wall-5">
+      <img src="media/mail_start.png" id="start-button2">
+      <div class="arrow-square" id="arrow-buttons">
+        <button id="left-arrow" class="arrow-button">&#8592;</button>
+        <button id="up-arrow" class="arrow-button">&#8593;</button>
+        <button id="right-arrow" class="arrow-button">&#8594;</button>
+        <button id="down-arrow" class="arrow-button">&#8595;</button>
+      </div>
+  </div>
+  <p id="email-address" style="display:none;">patonthebackstudios@gmail.com</p>
+</div>
+
+  <style>
+
+    #game-box {
+        position: relative;
+        width: 98%;
+        height: 400px;
+        margin: 0 auto;
+        border: dashed medium darkred;
+        border-radius: 10px;
+    }
+    #game1{
+        background: url("media/sky.png");
+        background-position-x: center;
+        background-position-y: center;
+    }
+    #phone-booth {
+      position: absolute;
+      bottom: 0;
+      left: 2%;
+    
+    }
+    #stickman {
+      position: absolute;
+      bottom: 0;
+      right: 2%;
+      opacity: 0.3;
+    }
+    #start-button {
+      position: absolute;
+      bottom: 0;
+      right: 2%;
+      opacity: 1;
+    }
+    #wasd {
+      position: absolute;
+      right: 0;
+      top: -5%;
+      opacity: 1;
+    }
+    #phone-number {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      background-color: forestgreen;
+      width:fit-content;
+      padding:5px;
+      color:greenyellow;
+      border-radius: 5px;
+      border-width: thick;
+      font-size: 30px; 
+      border-style:dashed;
+    }
+  
+    #game-box2 {
+        position: relative;
+        width: 98%;
+        height: 400px;
+        margin: 0 auto;
+        margin-top: 20px;
+        border: dashed medium darkred;
+        border-radius: 10px;
+    }
+    #game2 {
+        background-image: url("media/brick.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    #computer {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    #email-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.3;
+    }
+   
+
+    #spiky-wall-1{
+      position: absolute;
+      left: 20%;
+      top: 0;
+    }
+
+    #spiky-wall-2{
+      position: absolute;
+      left: 30%;
+      bottom: 0;
+    }
+
+    #spiky-wall-3{
+      position: absolute;
+      left: 50%;
+      top: 0;    
+    }
+
+    #spiky-wall-4{
+      position: absolute;
+      left: 65%;
+      top: 40%;    
+    }
+
+    #spiky-wall-5{
+      position: absolute;
+      left: 75%;
+      top: 0;    
+    }
+
+  
+    #start-button2 {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    #arrow-buttons {
+        position: absolute;
+        bottom: 10px;
+        right: 200px;
+        display: none;
+        font-size: 40px;
+    }
+
+    .arrow-button {
+        background-color:darkgoldenrod;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ccc;
+        text-align: center;
+        line-height: 50px;
+        font-size: 20px;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    #up-arrow {
+        position: absolute;
+        bottom: 50px;
+        left: 20px;
+    }
+
+    #left-arrow {
+        position: absolute;
+        bottom: 5px;
+        left: -30px;
+    }
+
+    #right-arrow {
+        position: absolute;
+        bottom: 5px;
+        left: 70px;
+    }
+
+    #down-arrow {
+        position: absolute;
+        bottom: 5px;
+        left: 20px;
+    }
+
+    #email-address {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      background-color: forestgreen;
+      width:fit-content;
+      padding:5px;
+      color:greenyellow;
+      border-radius: 5px;
+      border-width: thick;
+      font-size: 30px; 
+      border-style:dashed;
+    }
+  </style>
+  
+
+{% endblock %}

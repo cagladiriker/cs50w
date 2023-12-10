@@ -1,0 +1,81 @@
+{% extends "potbs/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'potbs/games.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div id="new_game_form" style="display:none; margin: 20px;">
+  <form class="row g-3" action="{% url 'new_game'%}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+      <div class="col-md-6">
+        <label class="form-label"><strong>Title</strong></label>
+        <input type="text" class="form-control" id="title" name="title">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label"><strong>Sub Title</strong></label>
+        <input type="text" class="form-control" id="sub_title" name="sub_title">
+      </div>
+      <div class="col-12">
+        <label class="form-label"><strong>Description</strong></label>
+        <input type="textarea" class="form-control" id="description" name="description">
+      </div>
+      <div class="col-6">
+        <label class="form-label"><strong>Thumbnail</strong></label>
+        <input type="file" class="form-control" id="thumbnail" name="thumbnail">
+      </div>
+      <div class="col-6">
+        <label class="form-label"><strong>Platform</strong></label>
+        <input type="text" class="form-control" id="platform" name="platform">
+      </div>
+      <div class="col-6">
+        <label class="form-label"><strong>Game Link</strong></label>
+        <input type="url" class="form-control" id="game_link" name="game_link">
+      </div>
+      <div class="col-6">
+        <label class="form-label"><strong>Launch Date</strong></label>
+        <input type="date" class="form-control" id="launch_date" name="launch_date">
+      </div>
+      <div class="col-6">
+        <input type="submit" class="btn btn-dark" id="submit" value="Submit" style="margin-top: 10px;">
+      </div>
+    </form>
+    <div class="col-md-6">
+      <button class="btn btn-danger" id="cancel" name="cancel" style="margin-top: 10px;">Cancel</button>
+    </div>
+</div>
+
+<div id="content" style="display: block;">
+  {% if user.is_superuser %}
+    <div class="d-grid gap-2 col-4 mx-auto">
+      <button id="new_game" class="btn btn-dark" type="button" style="margin-bottom: 10px;">Submit New Game</button>
+    </div>
+  {% endif %}
+  <div class="row games">
+  {% for game in games %}
+      <div class="col-md-4 item-col">
+        <div class="item-card">
+          {% if game.image %}
+          <img class="card-img-top" src="{{game.image.url}}" alt="Card image cap">
+          {% endif %}
+          <div class="card-body">
+            <h3 class="card-title">{{game.title}}</h3>
+            {% if game.sub_title %}
+            <p><h5 class="card-subtitle mb-2">{{game.sub_title}}</h5></p>
+            {% endif %}
+            {% if game.description %}
+            <p class="card-text">{{game.description}}</p>
+            {% endif %}
+            <div class="card-bottom mt-auto">
+              <p class="card-text platform"><small class="muted">{{game.platform}}</small></p>
+              <p class="card-text launch"><small class="muted">Launch Date: {{game.launch_date|date:"Y-m-d" }}</small></p>
+              <a href="{{game.link}}" target="_blank"><button id="play-game" class="btn game">Play</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}

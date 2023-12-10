@@ -1,0 +1,174 @@
+{% extends "potbs/layout.html" %}
+
+{% load static %}
+{% block script %}
+    <script src="{% static 'potbs/index.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <div class="board">
+        <div class="row mx-auto">
+            <div class="row home">
+                <!-- Left column -->
+                <div class="col-lg-5" id="billboard">
+                    <h1 style="text-align: center; color: #e6e2c2; letter-spacing:50px; margin-left: 50px; font-family: Chulkduster fantasy; ">GAMES</h1>
+                    <div class="game-board">
+                        {% for game in games %}
+                        <div class="game-slide" id="game-slide-{{forloop.counter0}}" {% if forloop.first %}style="display: block;"{% else %}style="display: none;"{% endif %}>
+                            {% if game.image %}
+                            <a href="{{game.link}}" target="_blank"><img src="{{game.image.url}}" alt="{{game.image}}">
+                            {% endif %}
+                            <h3 class="game-title">{{game.title}}</h3></a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="game-circles">
+                        {% for game in games %}
+                        <span class="game-circle" data-slide="{{forloop.counter0}}" {% if forloop.first %}style="background-color: #d95a28ff"{% endif %}></span>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'games' %}" class="btn btn-primary" id="see_all">See All</a>
+                </div>
+
+                <!-- Right column -->
+                <div class="col-lg-5" id="billboard">
+                    <h1 style="text-align: center; color: #e6e2c2; letter-spacing:50px; margin-left: 25px; font-family: Chulkduster fantasy; ">EVENTS</h1>
+                    <div class="event-board">
+                        {% for event in events %}
+                        <div class="event-slide" id="event-slide-{{ forloop.counter0 }}" {% if forloop.first %}style="display: block;"{% else %}style="display: none;"{% endif %}>
+                            <a href="{{event.map_url}}" target="_blank">
+                            {% if event.event_poster %}
+                                <div class="event-image" style="background-image: url('{{ event.event_poster.url }}');"></div>
+                            {% endif %}
+                            <h3 class="event-title">{{event.event_name}}</h3></a>
+                            <p class="event-location">{{event.event_city}},{{event.event_country}} </p>
+                            <p class="event-date">{{event.event_date}} </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="event-circles">
+                        {% for event in events %}
+                        <span class="event-circle" data-slide="{forloop.counter0 }" {% if forloop.first %}style="background-color: #d95a28ff"{% endif %}></span>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'events' %}" class="btn btn-primary" id="see_all">See All</a>
+                </div>      
+            </div>
+        </div>
+        <h1 class="table_title">Vote for your favourite game idea below!</h1>
+        {% if user.is_superuser %}
+            <div class="d-grid gap-2 col-4 mx-auto">
+                <button id="new_idea" class="btn btn-dark" type="button" style="display:inline-block;margin-bottom: 10px;">Submit New Idea</button>
+            </div>
+        {% endif %}
+        <!-- New idea form -->
+        <div id="new_idea_form" style="display: none; margin: 20px;">
+            <form class="row g-3" action="{% url 'index'%}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+                <div class="col-md-6">
+                  <label class="form-label"><strong>Character</strong></label>
+                  <input type="file" class="form-control" id="character" name="character">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label"><strong>Background Image</strong></label>
+                  <input type="file" class="form-control" id="bg_image" name="bg_image">
+                </div>
+                <div class="col-12">
+                  <label class="form-label"><strong>Game Genre</strong></label>
+                  <select class="form-control" id="genre" name="genre">
+                        <option value="select">--Select game genre--</option>
+                        <option value="Interactive Story">Interactive Story</option>
+                        <option value="Platformer">Platformer</option>
+                        <option value="Point & Click">Point & Click</option>
+                        <option value="Puzzle">Puzzle</option>
+                        <option value="RPG">RPG</option>
+                        <option value="Simulation">Simulation</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label"><strong>Music Genre</strong></label>
+                  <select class="form-control" id="music" name="music">
+                        <option value="select">--Select music genre--</option>
+                        <option value="8-bit">8-bit</option>
+                        <option value="Ambient">Ambient</option>
+                        <option value="Electronic">Electronic</option>
+                        <option value="Folk">Folk</option>
+                        <option value="Orchestral">Orchestral</option>
+                        <option value="Synthwave">Synthwave</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label"><strong>Voice Acting</strong></label><br>
+                  <input type="checkbox" id="voiceacting" name="voiceacting">
+                  <label for="voiceacting">The game will be voiceovered.</label>
+                </div>
+                <div>
+                  <input type="submit" class="btn btn-dark" id="submit" value="Submit">
+                </div>
+              </form>
+              <div class="col-md-6">
+                <button class="btn btn-danger" id="cancel" name="cancel" style="margin-top: 10px;">Cancel</button>
+              </div>
+          </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Character</th>
+                    <th>Background</th>
+                    <th>Genre</th>
+                    <th>Music</th>
+                    <th>Voice Acting</th>
+                    <th>Likes</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for idea in ideas %}
+                <tr>
+                    {% if idea.character %}
+                    <td><img src="{{ idea.character.url }}" alt="Character Image"></td>
+                    {% endif %}
+                    <td><img src="{{ idea.bg_image.url }}" alt="Background Image"></td>
+                    <td><div class="text-field">{{ idea.genre }}</td></div>
+                    <td><div class="text-field">{{ idea.music_genre }}</td></div>
+                    <td><div class="text-field">{{ idea.voice_acting | yesno:"Yes,No" }}</td></div>
+                    <td>
+                        <div id="likes_{{idea.id}}">
+                                {% if user.is_authenticated %}
+                                    <i style="color: #e3c142;" id="like_{{ idea.id }}" data-id="{{ idea.id }}" class="likeicon likeicon-user fa-heart {% if user in idea.liked_by.all %}fas{% else %}far{% endif %}" {% if idea.status == True %}disabled{% endif %}></i>
+                                {% else %}
+                                    <i style="color: #e3c142;" class="likeicon fa-heart far" disabled></i>
+                                {% endif %}
+                                <span id="idea_likecount_{{ idea.id }}">{{ idea.liked_by.count }}</span>
+                        </div>
+                    </td>
+                    {% if idea.status == False %}
+                        {% if user.is_superuser %}
+                            <td><button id="close_{{ idea.id }}" data-id="{{ idea.id }}" class="btn btn-light">Close</button></td>
+                        {% else %}
+                            <td><div style="color: rgb(2, 194, 2);">Open</div></td>
+                        {% endif %}
+                    {% else %}
+                        {% if user.is_superuser %}
+                            <td><button id="close_{{ idea.id }}" data-id="{{ idea.id }}" class="btn btn-light" disabled= true >Closed</button></td>
+                        {% else %}
+                            <td><div style="color:rgb(255, 0, 0)">Closed</div></td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" style="text-align:center;font-size: 25px;font-weight: bold;">All active ideas have been voted. Thank you for waiting while we cook some more.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

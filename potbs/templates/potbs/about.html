@@ -1,0 +1,44 @@
+{% extends "potbs/layout.html" %}
+{% load static %}
+{% block script %}
+    <script src="{% static 'potbs/about.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+      {% for member in team_members %}
+      <div class="col" id="border">
+
+      <!--If user is admin, show edit button-->
+        {% if user.is_superuser %}
+        <div class="position-relative" id="edit_button_{{member.id}}" style="display: block;">
+          <button class="btn btn-lg position-absolute top-0 end-0" id="edit_profile" data-id="{{member.id}}" data-username="{{member.username}}">
+          <i class="fa fa-edit fa-solid" style="color: white; margin-right: 5px;"></i></button>
+        </div>
+        {% endif %}
+        
+        <div class="col-xs-12 center-block text-center">
+          <!--Display profile picture-->
+            <img class="pp" id="pp_{{member.id}}" src="{{member.profile_picture.url}}" alt="{{member.username}}">
+
+          <!--Edit form-->
+            <div class="form-group" id="edit_{{member.id}}">
+            </div>
+     
+          <!--Display username,skills,socials and bio-->
+            <div id="remove_{{member.id}}" style="display: block;">
+              <h3 class="username" id="username_{{member.id}}">{{member.username}}</h3>
+              <p class ="skills" id="skills_{{member.id}}">{{member.skills}}</p>
+              <p><a class="social-media" href="{{member.instagram}}" id="instagram_{{member.id}}"><i class="fa-brands fa-instagram fa-solid" style="color: #e3c142; margin-right: 5px;"></i></a>
+              <a class="social-media" href="{{member.itch_profile}}" id="itch_{{member.id}}"><i class="fa-brands fa-itch-io" style="color: #e3c142;"></i></a>
+              <div class="bio">
+                  <strong class="username" id="secusername_{{member.id}}"  style="font-size: large;">{{member.username}} </strong><p id="bio_{{member.id}}">{{member.bio}}</p>
+              </div>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
