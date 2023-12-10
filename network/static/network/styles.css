@@ -1,0 +1,13 @@
+.grey{
+    color: grey;
+}
+
+.frame{
+    display: block;
+    border: 1px solid gainsboro;
+    padding: 10px;
+    margin: 10px;
+    height: fit-content;
+    width: auto;
+}
+

@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'network/network.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+    <div class="frame">
+        <div class="form-group" id="title">
+            <h3>New Post</h3>
+        </div>
+        <form action="{% url 'new_post'%}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea id = "create_post" class="form-control" name="post_content" cols="30"></textarea>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Post">
+            </div>
+        </form>
+    </div>
+{% endif %}
+        <h3 class="pt-4 pb-3 text-left" style="margin: 10px;">All posts</h3>
+        {% include "network/allposts.html" %}
+{% endblock %}
+

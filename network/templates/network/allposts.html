@@ -1,0 +1,50 @@
+{% load static %}
+
+{% for post in page_obj %}
+    {{ post.full_name|upper }}<br>
+    
+        <div class="frame" id="post_headline_{{ post.id }}">
+            <h4><a href="{% url 'profile' post.user.username %}" style="color: black;">{{post.user.username}}</a></h4>
+            <div id="edit_form_{{ post.id }}">
+                <p id="content_{{ post.id }}" class="mb-2">{{ post.content }}</p>
+            </div>
+            <div id="post_likes_{{ post.id }}">
+                {% if user.is_authenticated %}
+                <i style="color: red;" id="like_{{ post.id }}" data-id="{{ post.id }}" class="likeicon likeicon-user fa-heart {% if user in post.liked_by.all %}fas{% else %}far{% endif %}"></i>
+                {% else %}
+                <i style="color: red;" class="likeicon fa-heart {% if post.likes != 0 %}fas{% else %}far{% endif %}"></i>
+                {% endif %}
+                <span id="post_likecount_{{ post.id }}">{{ post.likes }}</span>
+
+            </div>
+            <div class="grey" id="timestamp">{{post.date}}</div>
+
+            <a href="#" style="color: grey;">Comment</a><br>
+            {% if user.is_authenticated and post.user == user %}
+            <a href="javascript:void(0)" data-id="{{ post.id }}" id="edit_{{ post.id }}" class="badge bade-pill badge-secondary">Edit</a>
+            {% endif %}
+
+        </div>
+{% endfor %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end" style="padding: 10px;">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="?page=1">&laquo; First</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+        {% endif %}
+
+        {% for page in page_obj.paginator.page_range %}
+            <li class="{% if page_obj.number == page %}page-item active{% endif %}"><a class="page-link" href="?page={{page }}">{{ page }}</a></li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"> Last &raquo;</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            <li class="page-item disabled"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+        {% endif %}
+</nav>

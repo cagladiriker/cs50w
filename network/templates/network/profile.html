@@ -1,0 +1,29 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'network/network.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+
+<div class = "badge badge-pill badge-info" style="margin: 10px;">Following: {{following_number}}</div>
+<div class = "badge badge-pill badge-info">Followers: {{follower_number}}</div>
+
+<!--If the logged in user is not the profile owner, show the Follow button-->
+{% if user.is_authenticated %}
+    {% if session_user != posted_by %}
+        <form action="{% url 'profile' posted_by.username %}" method="post">
+            {% csrf_token %}
+            {% if is_following %}
+                <input class = "btn btn-danger btn-sm" style = "margin: 10px;" type="submit" value="Unfollow" name="unfollow">
+            {% else %}
+                <input class = "btn btn-success btn-sm" style = "margin: 10px;" type="submit" value="Follow" name="follow">
+            {% endif %}
+        </form>
+    
+    {% endif %}
+{% endif %}
+        
+    <div>{% include "network/allposts.html" %}</div>
+{% endblock %}
