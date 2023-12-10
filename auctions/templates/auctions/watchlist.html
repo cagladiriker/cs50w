@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Watchlist
+{% endblock %}
+
+{% block body %}
+<h2>{{user.username}}'s Watchlist</h2>
+    {% for item in item_list %}
+    <div class = "frame">
+        {% if item.image %}
+            <img src="{{item.image}}" style= "width: 15vw;">
+        {% endif %}
+        <h4 style="margin:5px;"><a href="{% url 'listing' item.id %}">{{item.title}}</a></h4>
+        <div id="text"><strong>Starting Price:</strong> ${{item.price}}</div>
+        <div id="text"><strong>Description:</strong> {{item.description}}</div>
+        <div id="text"><strong>Category:</strong> {{item.category}}</div><br>
+        <div id="created">Created by {{item.user}}, on {{item.date}}</div>
+    </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Listing
+{% endblock %}
+
+{% block body %}
+    <h2>Listing: {{listing.title}}</h2>
+    <div id="created">Created by {{listing.user}}, on {{listing.date}}</div>
+
+    {% if added %}
+        <div class = form-group>
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input style="margin: 5px;" class="btn btn-danger" type="submit" name="remove" value="Remove From Watchlist">
+        </form>
+        </div>
+    {% else %}
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input style="margin: 5px;" class = "btn btn-success" type="submit" name="add" value="Add to Watchlist">
+        </form>
+    {% endif %}
+
+    {% if listing.user == user %}
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input style = "margin: 5px;" class="btn btn-danger" type="submit" name="close" value="Close Listing">
+        </form>
+    {% endif %}
+    <br>
+
+    {% if listing.image %}
+        <img src="{{listing.image}}" style= "width: 30vw; margin: 5px;">
+    {% endif %}
+
+    <div style="margin: 5px;">{{listing.description}}</div><br>
+    <div style= "border: solid 2px cornflowerblue; 
+    border-radius: 5px; 
+    width:fit-content;
+    padding: 5px;
+    color: midnightblue; 
+    margin: 5px;" >
+        <strong>Starting Price: ${{listing.price}}</strong>
+    </div>
+    
+    {% if bid %}
+        <div style ="border: solid 2px coral; 
+        border-radius: 5px; 
+        width:fit-content;
+        padding: 5px; 
+        color:indianred; 
+        margin: 5px;">
+            <strong>Current Bid: ${{bid}}</strong>
+        </div>
+    {% endif %}
+    <br>
+
+    {% if user.is_authenticated %}
+    {% if success_message %}
+            <div style="margin: 5px;padding: 20px;
+            background-color: #6bb68a; /* Green */
+            color: white;
+            margin-bottom: 15px;
+            width: fit-content;">
+            <strong >{{success_message}}</strong>
+        </div>
+    {% endif %}
+    {% if alert_message %}
+            <div style="margin: 5px;padding: 20px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+            width: fit-content;">
+            <strong >{{alert_message}}</strong>
+        </div>
+    {% endif %}
+
+
+        <div class = form-group>
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <input style="margin: 5px;" class= "form-control" type="number" name="bid_value" placeholder="Your Bid ($)">
+                <input style="margin: 5px;" class="btn btn-primary" type="submit" value="Bid" name="bid">
+            </form>
+        </div>
+
+        {% if comments %}
+        <h2>Comments:</h2>
+            {% for comment in comments %}
+                <div class="frame">
+                    <div><strong>{{comment.user.username}}: </strong>{{comment.comment}}</div>
+                    <div id = "created">On, {{comment.date}}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <br><br>
+        <div class = form-group>
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <textarea class="form-control" name="new_comment" cols="5" rows="5" placeholder="Comment"></textarea><br>
+                <input class = "btn btn-primary" type="submit" value="Post Comment" name="post_comment">
+            </form>
+        </div>
+
+    {% endif %}
+{% endblock %}

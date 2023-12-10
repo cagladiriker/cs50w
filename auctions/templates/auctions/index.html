@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    {% for auction in auctions %}
+        <div class = "frame">
+            {% if auction.image %}
+                <img src="{{auction.image}}" style= "width: 15vw;">
+            {% endif %}
+            {% if user.is_authenticated %}
+            <h4 style="margin:5px;"><a href="{% url 'listing' auction.id %}">{{auction.title}}</a></h4>
+            {% else %}
+            <h4 style="margin:5px;">{{auction.title}}</h4>
+            {% endif %}
+
+            <div id="text"><strong>Starting Price:</strong> ${{auction.price}}</div>
+            <div id="text"><strong>Description:</strong> {{auction.description}}</div>
+            {% if auction.category %}
+            <div id="text"><strong>Category: </strong><a href="{% url 'category' auction.category.id %}">{{ auction.category.name }}</a></div>
+            {% endif %}
+            <br>
+            <div id="created">Created by {{auction.user}}, on {{auction.date}}</div>
+        </div>
+        {% empty %}
+        <div style="margin:5px;
+        padding: 20px;
+        background-color: #f44336;
+        color: white;width: fit-content;
+        border-radius: 5px;">
+            <strong> No Active Listing.</strong>
+        </div>
+    {% endfor %}
+{% endblock %}

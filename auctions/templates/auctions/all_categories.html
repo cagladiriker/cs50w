@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Categories
+{% endblock %}
+
+{% block body %}
+    <h2>List of Categories</h2>
+
+    {% for category in categories %}
+        <ul>
+            <li>
+                <div id="text"><strong></strong><a href="{% url 'category' category.id %}">{{category.name}}</a></div>
+            </li>
+        </ul>
+        {% empty %}
+                <div style="padding: 20px;
+                margin: 5px;
+                background-color: #f44336;
+                color: white;width: max-content;
+                border-radius: 5px;">
+                    <strong> No Active Listing.</strong>
+                </div>
+    {% endfor %}
+{% endblock %}

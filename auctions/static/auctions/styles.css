@@ -1,0 +1,27 @@
+body {
+    padding: 10px;
+}
+
+.frame{
+    display: block;
+    border: 1px solid gainsboro;
+    padding: 10px;
+    margin: 10px;
+    height: fit-content;
+    width: auto;
+}
+
+#created{
+    font-size: 12px;
+    padding: 3px;
+    color: grey;
+    margin: 5px;
+}
+
+#text{
+    font-size: 15px;
+    padding: 5px;
+}
+h2{
+    margin: 5px;
+}

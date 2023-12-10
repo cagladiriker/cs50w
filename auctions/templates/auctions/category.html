@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{Categories}}
+{% endblock %}
+
+{% block body %}
+    <h2>Category: {{name}}</h2>
+
+    {% for item in items %}
+        <div class = "frame">
+
+            {% if item.image %}
+                <img src="{{item.image}}" style= "width: 15vw;">
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <h4 style="margin:5px;"><a href="{% url 'listing' item.id %}">{{item.title}}</a></h4>
+            {% else %}
+            <h4 style="margin:5px;">{{item.title}}</h4>
+            {% endif %}
+            
+            <div id="text"><strong>Starting Price:</strong> ${{item.price}}</div>
+            <div id="text"><strong>Description:</strong> {{item.description}}</div>
+            
+            {% if item.category %}
+            <div id="text"><strong>Category: </strong><a href="{% url 'category' item.category.id %}">{{ item.category.name }}</a></div>
+            {% endif %}
+            <br>
+
+            <div id="created">Created by {{item.user}}, on {{item.date}}</div>
+        </div>
+            
+            {% empty %}
+                <div style="margin:5px;
+                padding: 20px;
+                background-color: #f44336;
+                color: white;width: fit-content;
+                border-radius: 5px;">
+                    <strong> Items are closed.</strong>
+                </div>
+    {% endfor %}
+{% endblock %}

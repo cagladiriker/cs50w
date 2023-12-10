@@ -1,0 +1,58 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Closed Items
+{% endblock %}
+
+{% block body %}
+    <h2>Closed Items</h2>
+
+    {% for closed_item in closed_items %}
+        <div class = "frame">
+            {% if closed_item.image %}
+                <img src="{{closed_item.image}}" style= "width: 15vw;">
+            {% endif %}
+            <br>
+            <h2>{{closed_item.title}}</h2>
+            
+            {% if user.username == closed_item.winner.username %}
+            <div style="background-color: forestgreen;
+            width:fit-content;
+            padding:5px;
+            color:greenyellow;
+            border-radius: 5px;
+            font-size: 20px; 
+            border-style:dotted;">
+                Winner is <strong>YOU!</strong>
+            </div>
+            {% else %}
+            <div style="background-color: forestgreen;
+            width:fit-content;
+            padding:5px;
+            color:greenyellow;
+            border-radius: 5px;
+            font-size: 20px;
+            border-style:dotted;">
+                <strong>Winner:</strong> {{closed_item.winner}}
+            </div>
+            {% endif %}
+            
+            <div id="text"><strong>Starting Price:</strong> ${{closed_item.price}}</div>
+            <div id="text"><strong>Winning Bid:</strong> ${{closed_item.winning_bid}}</div>
+            <div id="text"><strong>Description:</strong> {{closed_item.description}}</div>
+            {% if closed_item.category %}
+            <div id="text"><strong>Category:</strong> {{closed_item.category}}</div>
+            {% endif %}
+            <br>
+            <div id="created">Created by {{closed_item.user}}, on {{closed_item.date}}</div>
+        </div>
+        {% empty %}
+        <div style="margin:5px;
+        padding: 20px;
+        background-color: #f44336;
+        color: white;width: fit-content;
+        border-radius: 5px;">
+            <strong> No Closed Item.</strong>
+        </div>
+    {% endfor %}
+{% endblock %}
